@@ -24,3 +24,12 @@ def oCtAnT(i,j,k):
         return -4
 #Here it will read input file.
 DaTaFrAmE=pAnDa_jI.read_csv("octant_input.csv")
+
+#Pre-Processing the data.
+DaTaFrAmE.at[0,'U_AVG']=DaTaFrAmE['U'].mean()
+DaTaFrAmE.at[0,'V_AVG']=DaTaFrAmE['V'].mean()
+DaTaFrAmE.at[0,'W_AVG']=DaTaFrAmE['W'].mean()
+
+DaTaFrAmE['U-U_AVG']=DaTaFrAmE['U']-DaTaFrAmE.at[0,'U_AVG']
+DaTaFrAmE['V-V_AVG']=DaTaFrAmE['V']-DaTaFrAmE.at[0,'V_AVG']
+DaTaFrAmE['W-W_AVG']=DaTaFrAmE['W']-DaTaFrAmE.at[0,'W_AVG']
