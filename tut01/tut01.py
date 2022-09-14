@@ -51,3 +51,10 @@ DaTaFrAmE.at[0,'3']=DaTaFrAmE['octant'].value_counts()[3]
 DaTaFrAmE.at[0,'-3']=DaTaFrAmE['octant'].value_counts()[-3]
 DaTaFrAmE.at[0,'4']=DaTaFrAmE['octant'].value_counts()[4]
 DaTaFrAmE.at[0,'-4']=DaTaFrAmE['octant'].value_counts()[-4]
+
+#Taking input from user.
+mod=int(input("Please enter the value: "))
+DaTaFrAmE.at[1,'octant ID']=mod
+
+total_len=len(DaTaFrAmE['octant'])
+temp1=0
