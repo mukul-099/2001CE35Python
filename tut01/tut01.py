@@ -33,3 +33,21 @@ DaTaFrAmE.at[0,'W_AVG']=DaTaFrAmE['W'].mean()
 DaTaFrAmE['U-U_AVG']=DaTaFrAmE['U']-DaTaFrAmE.at[0,'U_AVG']
 DaTaFrAmE['V-V_AVG']=DaTaFrAmE['V']-DaTaFrAmE.at[0,'V_AVG']
 DaTaFrAmE['W-W_AVG']=DaTaFrAmE['W']-DaTaFrAmE.at[0,'W_AVG']
+
+#Using "oCtAnT" func. for categorizing the data using .apply function.
+DaTaFrAmE['octant']=DaTaFrAmE.apply(lambda i: oCtAnT(i['U-U_AVG'], i['V-V_AVG'], i['W-W_AVG']),axis=1)
+
+#Adding/Leaving empty column.
+DaTaFrAmE[' ']=''
+DaTaFrAmE.at[1,' ']='user input'
+
+#Here we will count overall values using value-counts function.
+DaTaFrAmE.at[0,'octant ID']='overall count'
+DaTaFrAmE.at[0,'1']=DaTaFrAmE['octant'].value_counts()[1]
+DaTaFrAmE.at[0,'-1']=DaTaFrAmE['octant'].value_counts()[-1]
+DaTaFrAmE.at[0,'2']=DaTaFrAmE['octant'].value_counts()[2]
+DaTaFrAmE.at[0,'-2']=DaTaFrAmE['octant'].value_counts()[-2]
+DaTaFrAmE.at[0,'3']=DaTaFrAmE['octant'].value_counts()[3]
+DaTaFrAmE.at[0,'-3']=DaTaFrAmE['octant'].value_counts()[-3]
+DaTaFrAmE.at[0,'4']=DaTaFrAmE['octant'].value_counts()[4]
+DaTaFrAmE.at[0,'-4']=DaTaFrAmE['octant'].value_counts()[-4]
