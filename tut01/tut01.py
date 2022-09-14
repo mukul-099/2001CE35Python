@@ -58,3 +58,35 @@ DaTaFrAmE.at[1,'octant ID']=mod
 
 total_len=len(DaTaFrAmE['octant'])
 temp1=0
+
+#Using loop to split the data into different ranges.
+while(total_len>0):
+    temp2=mod
+
+    #for last range.
+    if total_len<mod:
+        mod=total_len
+    i=temp1*temp2
+    j=temp1*temp2+mod-1
+
+    #Here we will insert range and the corresponding data.
+    DaTaFrAmE.at[temp1+2,'octant ID']=str(i)+'-'+str(j)
+
+    #Counting the octant, creating a new dataframe for a choosen range.
+    DaTaFrAmE1=DaTaFrAmE.loc[i:j]
+
+    #Inserting values into cell after checking the octant for a particular range.
+    DaTaFrAmE.at[temp1+2,'2']=DaTaFrAmE1['octant'].value_counts()[2]
+    DaTaFrAmE.at[temp1+2,'-3']=DaTaFrAmE1['octant'].value_counts()[-3]
+    DaTaFrAmE.at[temp1+2,'3']=DaTaFrAmE1['octant'].value_counts()[3]
+    DaTaFrAmE.at[temp1+2,'-4']=DaTaFrAmE1['octant'].value_counts()[-4]
+    DaTaFrAmE.at[temp1+2,'4']=DaTaFrAmE1['octant'].value_counts()[4]
+    DaTaFrAmE.at[temp1+2,'-1']=DaTaFrAmE1['octant'].value_counts()[-1]
+    DaTaFrAmE.at[temp1+2,'1']=DaTaFrAmE1['octant'].value_counts()[1]
+    DaTaFrAmE.at[temp1+2,'-2']=DaTaFrAmE1['octant'].value_counts()[-2]
+
+    temp1=temp1+1
+    total_len=total_len-mod
+
+#Saving the file as output.
+DaTaFrAmE.to_csv("octant_output.csv") 
