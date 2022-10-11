@@ -88,3 +88,37 @@ while(total_len>0):
 
     temp1=temp1+1
     total_len=total_len-mod
+    
+#Creating a function to find transition count.
+
+
+def cOuNt_TrAnSiTiOnS(Dataframe, p, q):
+    r = 0
+    for t in range(len(Dataframe)-1):
+        if Dataframe.at[t, 'octant'] == p and Dataframe.at[t+1, 'octant'] == q:
+            r = r+1
+    return r
+
+
+sp = int(len(DaTaFrAmE)/mod)
+DaTaFrAmE.at[sp+6, 'Octant ID'] = 'Overall Transition Count'
+DaTaFrAmE.at[sp+7, 'Octant ID'] = 'To'
+DaTaFrAmE.at[sp+8, '1'] = 1
+DaTaFrAmE.at[sp+8, '-1'] = -1
+DaTaFrAmE.at[sp+8, '2'] = 2
+DaTaFrAmE.at[sp+8, '-2'] = -2
+DaTaFrAmE.at[sp+8, '3'] = 3
+DaTaFrAmE.at[sp+8, '-3'] = -3
+DaTaFrAmE.at[sp+8, '4'] = 4
+DaTaFrAmE.at[sp+8, '-4'] = -4
+
+DaTaFrAmE.at[sp+9, ''] = 'From'
+DaTaFrAmE.at[sp+8, 'Octant ID'] = 'Count'
+DaTaFrAmE.at[sp+9, 'Octant ID'] = -4
+DaTaFrAmE.at[sp+10, 'Octant ID'] = -3
+DaTaFrAmE.at[sp+11, 'Octant ID'] = -2
+DaTaFrAmE.at[sp+12, 'Octant ID'] = -1
+DaTaFrAmE.at[sp+13, 'Octant ID'] = 1
+DaTaFrAmE.at[sp+14, 'Octant ID'] = 2
+DaTaFrAmE.at[sp+15, 'Octant ID'] = 3
+DaTaFrAmE.at[sp+16, 'Octant ID'] = 4
