@@ -154,3 +154,48 @@ def CoUnt_mod_TrAnSiTiOnS(Dataframe, mod, p, q):
 
 
 mod = 5000
+
+#Using a while loop and calling CoUnt_mod_TrAnSiTiOnS for calculating mod transitions count.
+
+while(total_len>0):
+    if(total_len<mod):
+        total_len=0
+    DaTaFrAmE.at[sp+20+14*temp4,'Octant ID']='Mod Transition Count'
+    DaTaFrAmE.at[sp+21+14*temp4,'Octant ID']='To'
+    DaTaFrAmE.at[sp+22+14*temp4,'1']=1
+    DaTaFrAmE.at[sp+22+14*temp4,'-1']=-1
+    DaTaFrAmE.at[sp+22+14*temp4,'2']=2
+    DaTaFrAmE.at[sp+22+14*temp4,'-2']=-2
+    DaTaFrAmE.at[sp+22+14*temp4,'3']=3
+    DaTaFrAmE.at[sp+22+14*temp4,'-3']=-3
+    DaTaFrAmE.at[sp+22+14*temp4,'4']=4
+    DaTaFrAmE.at[sp+22+14*temp4,'-4']=-4
+
+    DaTaFrAmE.at[sp+22+14*temp4,'']=str(mod*(temp4-1))+'-'+str(mod*temp4)
+    DaTaFrAmE.at[sp+23+14*temp4,'']='From'
+    DaTaFrAmE.at[sp+22+14*temp4,'Octant ID']='Count'
+    DaTaFrAmE.at[sp+23+14*temp4,'Octant ID']=-4
+    DaTaFrAmE.at[sp+24+14*temp4,'Octant ID']=-3
+    DaTaFrAmE.at[sp+25+14*temp4,'Octant ID']=-2
+    DaTaFrAmE.at[sp+26+14*temp4,'Octant ID']=-1
+    DaTaFrAmE.at[sp+27+14*temp4,'Octant ID']=1
+    DaTaFrAmE.at[sp+28+14*temp4,'Octant ID']=2
+    DaTaFrAmE.at[sp+29+14*temp4,'Octant ID']=3
+    DaTaFrAmE.at[sp+30+14*temp4,'Octant ID']=4
+
+    #Now calculating the overall transition count.
+    for i in range(int(len(DaTaFrAmE)/mod)+24+14*temp4,int(len(DaTaFrAmE)/mod)+28+14*temp4):
+        for j in range(-4,5):
+            DaTaFrAmE.at[i,str(j)] = CoUnt_mod_TrAnSiTiOnS(DaTaFrAmE, mod, i-int(len(DaTaFrAmE)/mod)-28-14*temp4,j)
+    for i in range(int(len(DaTaFrAmE)/mod)+28+14*temp4,int(len(DaTaFrAmE)/mod)+32+14*temp4):
+        for j in range(-4,5):
+            DaTaFrAmE.at[i,str(j)]=CoUnt_mod_TrAnSiTiOnS(DaTaFrAmE,mod,i-int(len(DaTaFrAmE)/mod)-27-14*temp4,j)
+
+    temp4=temp4+1
+    total_len=total_len-mod
+
+#Deleting the extra column.
+del DaTaFrAmE['0']
+
+#Saving the file as output in excel format.
+DaTaFrAmE.to_excel("output_octant_transition_identify.xlsx")
