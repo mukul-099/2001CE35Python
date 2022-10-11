@@ -41,3 +41,19 @@ DaTaFrAmE['W-W_AVG']=DaTaFrAmE['W']-DaTaFrAmE.at[0,'W_AVG']
 #Using "oCtAnT" func. for categorizing the data using .apply function.
 DaTaFrAmE['Octant']=DaTaFrAmE.apply(lambda i: oCtAnT(i['U-U_AVG'],i['V-V_AVG'],i['W-W_AVG']),axis=1)
 
+#Leaving empty column
+DaTaFrAmE[''] = ''
+
+#Defining columns for subsequnce.
+DaTaFrAmE['Octant Num'] = ''
+DaTaFrAmE['Longest Subsequence Length'] = ''
+DaTaFrAmE['Count'] = ''
+
+#Making a list of all the octants.
+OcTaNt_NuM = [1, -1, 2, -2, 3, -3, 4, -4]
+
+#Creating temprory variable(will be used in finding subsequence)
+temp1 = 0
+
+
+
