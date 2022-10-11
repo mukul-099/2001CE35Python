@@ -122,3 +122,15 @@ DaTaFrAmE.at[sp+13, 'Octant ID'] = 1
 DaTaFrAmE.at[sp+14, 'Octant ID'] = 2
 DaTaFrAmE.at[sp+15, 'Octant ID'] = 3
 DaTaFrAmE.at[sp+16, 'Octant ID'] = 4
+
+#Now we'll calculate overall transition count by calling cOuNt_TrAnSiTiOnS.
+for i in range(int(len(DaTaFrAmE)/mod)+9, int(len(DaTaFrAmE)/mod)+13):
+    for j in range(-4, 5):
+        DaTaFrAmE.at[i, str(j)] = cOuNt_TrAnSiTiOnS(
+            DaTaFrAmE, i-int(len(DaTaFrAmE)/mod)-13, j)
+for i in range(int(len(DaTaFrAmE)/mod)+13, int(len(DaTaFrAmE)/mod)+17):
+    for j in range(-4, 5):
+        DaTaFrAmE.at[i, str(j)] = cOuNt_TrAnSiTiOnS(
+            DaTaFrAmE, i-int(len(DaTaFrAmE)/mod)-12, j)
+
+total_len = len(DaTaFrAmE['octant'])
