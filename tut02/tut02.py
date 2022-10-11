@@ -134,3 +134,23 @@ for i in range(int(len(DaTaFrAmE)/mod)+13, int(len(DaTaFrAmE)/mod)+17):
             DaTaFrAmE, i-int(len(DaTaFrAmE)/mod)-12, j)
 
 total_len = len(DaTaFrAmE['octant'])
+
+
+#Defining a new function for counting mod transitions.
+temp4 = 1
+
+
+def CoUnt_mod_TrAnSiTiOnS(Dataframe, mod, p, q):
+    r = 0
+    if (mod*temp4-1 < len(Dataframe)):
+        for t in range(mod*(temp4-1), mod*temp4-1):
+            if Dataframe.at[t, 'octant'] == p and Dataframe.at[t+1, 'octant'] == q:
+                r = r+1
+    else:
+        for t in range(mod*(temp4-1), len(Dataframe)-1):
+            if Dataframe.at[t, 'octant'] == p and Dataframe.at[t+1, 'octant'] == q:
+                r = r+1
+    return r
+
+
+mod = 5000
