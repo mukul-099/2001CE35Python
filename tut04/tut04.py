@@ -91,3 +91,27 @@ Kevin = 0
 DaTaFrAmE['Octant_Num'] = ''
 DaTaFrAmE['Longest_Subsequence_Length'] = ''
 DaTaFrAmE['Count_'] = ''
+
+#Finding subsequence for every count.
+for i in OcTaNt_NuM:
+    Gwen=DaTaFrAmE.at[Ben,'Longest Subsequence Length']
+    DaTaFrAmE.at[Kevin,'Octant_Num']=DaTaFrAmE.at[Ben,'Octant Num']
+    DaTaFrAmE.at[Kevin,'Longest_Subsequence_Length']=DaTaFrAmE.at[Ben,'Longest Subsequence Length']
+    DaTaFrAmE.at[Kevin,'Count_']=DaTaFrAmE.at[Ben,'Count']
+    Kevin+=1
+    DaTaFrAmE.at[Kevin,'Octant_Num']='Time'
+    DaTaFrAmE.at[Kevin,'Longest_Subsequence_Length']='From'
+    DaTaFrAmE.at[Kevin,'Count_']='To'
+    Kevin+=1
+    temp2=1
+    for j in range(len(lst1)-1):
+        if(i==lst1[j] and i==lst1[j+1]):
+            temp2+=1
+        elif(temp2==DaTaFrAmE.at[Ben,'Longest Subsequence Length']):
+            DaTaFrAmE.at[Kevin,'Longest_Subsequence_Length']=DaTaFrAmE.at[j-temp2+1,'Time']
+            DaTaFrAmE.at[Kevin,'Count_']=DaTaFrAmE.at[j,'Time']
+            Kevin=Kevin+1
+            temp2=1
+        else:
+            temp2=1
+    Ben+=1
