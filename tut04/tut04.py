@@ -57,3 +57,27 @@ DaTaFrAmE['Count'] = ''
 OcTaNt_NuM = [1, -1, 2, -2, 3, -3, 4, -4]
 
 lst1 = DaTaFrAmE['Octant'].tolist()
+
+#Creating temprory variable(will be used in finding subsequence)
+Ben = 0
+
+for k in OcTaNt_NuM:
+    DaTaFrAmE.at[Ben, 'Octant Num'] = k
+    cOuNt = 1
+    temp = 1
+    mAx_sUb_lEn = 0
+
+    for j in range(len(lst1)-1):
+        if (k == lst1[j] and k == lst1[j+1]):
+            temp = temp+1
+        else:
+            if (mAx_sUb_lEn == temp):
+                cOuNt = cOuNt+1
+            elif (mAx_sUb_lEn < temp):
+                cOuNt = 1
+            mAx_sUb_lEn = max(mAx_sUb_lEn, temp)
+            temp = 1
+    DaTaFrAmE.at[Ben, 'Longest Subsequence Length'] = mAx_sUb_lEn
+    DaTaFrAmE.at[Ben, 'Count'] = cOuNt
+    Ben = Ben+1
+
