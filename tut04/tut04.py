@@ -115,3 +115,10 @@ for i in OcTaNt_NuM:
         else:
             temp2=1
     Ben+=1
+
+#Now storing this dataframe to excel file.
+DaTaFrAmE.to_excel('output_octant_longest_subsequence_with_range.xlsx')
+
+#This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - start_time))
