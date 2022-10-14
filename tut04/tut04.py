@@ -81,3 +81,13 @@ for k in OcTaNt_NuM:
     DaTaFrAmE.at[Ben, 'Count'] = cOuNt
     Ben = Ben+1
 
+#Leaving empty column
+DaTaFrAmE['  '] = ''
+
+Ben = 0
+Kevin = 0
+
+#Creating new columns to store new values.
+DaTaFrAmE['Octant_Num'] = ''
+DaTaFrAmE['Longest_Subsequence_Length'] = ''
+DaTaFrAmE['Count_'] = ''
