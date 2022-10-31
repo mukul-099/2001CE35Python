@@ -113,7 +113,7 @@ for i in range(len(L_ist)):
     temp3 = temp3-1
 #Filling octants with highest count.
 DaTaFrAmE.at[0, 'Rank1_Octant_ID'] = int((DaTaFrAmE == L_ist[7]).idxmax(axis=1)[0])
-DaTaFrAmE.at[1, 'Rank1_Octant_ID'] = int(0)
+
 #Adding the names of octants.
 DaTaFrAmE.at[0, 'Rank1 Octant Name'] = D_ict[(DaTaFrAmE == L_ist[7]).idxmax(axis=1)[0]]
 
