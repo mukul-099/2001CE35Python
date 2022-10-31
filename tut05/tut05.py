@@ -95,3 +95,6 @@ while (total_len > 0):
 
     temp1 = temp1+1
     total_len = total_len-mod
+
+#Defining a dict. of octant's name.
+D_ict = {'1': 'Internal Outward Interaction', '-1': 'External Outward Interaction', '2': 'External Ejection', '-2': 'Internal Ejection','3': 'External Inward Interaction', '-3': 'Internal Inward Interaction', '4': 'Internal Sweep', '-4': 'External Sweep'}
