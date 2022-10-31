@@ -98,3 +98,21 @@ while (total_len > 0):
 
 #Defining a dict. of octant's name.
 D_ict = {'1': 'Internal Outward Interaction', '-1': 'External Outward Interaction', '2': 'External Ejection', '-2': 'Internal Ejection','3': 'External Inward Interaction', '-3': 'Internal Inward Interaction', '4': 'Internal Sweep', '-4': 'External Sweep'}
+#Creating a L_ist of counts in ascending order.
+L_ist = []
+for i in range(-4, 0):
+    L_ist.append(DaTaFrAmE.at[0, str(i)])
+for i in range(1, 5):
+    L_ist.append(DaTaFrAmE.at[0, str(i)])
+L_ist.sort()
+
+#Filling rank of counts.
+temp3 = 8
+for i in range(len(L_ist)):
+    DaTaFrAmE.at[0, 'rank'+(DaTaFrAmE == L_ist[i]).idxmax(axis=1)[0]] = temp3
+    temp3 = temp3-1
+#Filling octants with highest count.
+DaTaFrAmE.at[0, 'Rank1_Octant_ID'] = int((DaTaFrAmE == L_ist[7]).idxmax(axis=1)[0])
+DaTaFrAmE.at[1, 'Rank1_Octant_ID'] = int(0)
+#Adding the names of octants.
+DaTaFrAmE.at[0, 'Rank1 Octant Name'] = D_ict[(DaTaFrAmE == L_ist[7]).idxmax(axis=1)[0]]
