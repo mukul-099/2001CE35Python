@@ -116,3 +116,20 @@ DaTaFrAmE.at[0, 'Rank1_Octant_ID'] = int((DaTaFrAmE == L_ist[7]).idxmax(axis=1)[
 DaTaFrAmE.at[1, 'Rank1_Octant_ID'] = int(0)
 #Adding the names of octants.
 DaTaFrAmE.at[0, 'Rank1 Octant Name'] = D_ict[(DaTaFrAmE == L_ist[7]).idxmax(axis=1)[0]]
+
+#Filling this L_ist in acsending order.
+for j in range(2, int(len(DaTaFrAmE)/mod)+2):
+    L_ist = []
+    for i in range(-4, 0):
+        L_ist.append(DaTaFrAmE.at[j, str(i)])
+    for i in range(1, 5):
+        L_ist.append(DaTaFrAmE.at[j, str(i)])
+    L_ist.sort()
+    temp3 = 8
+    for i in range(len(L_ist)):
+        DaTaFrAmE.at[j, 'rank'+(DaTaFrAmE == L_ist[i]).idxmax(axis=1)[j]] = temp3
+        temp3 = temp3-1
+    #Filling the octants which have highest count.
+    DaTaFrAmE.at[j, 'Rank1_Octant_ID'] = int((DaTaFrAmE == L_ist[7]).idxmax(axis=1)[j])
+    #Now adding the name of tht octant.
+    DaTaFrAmE.at[j, 'Rank1 Octant Name'] = D_ict[(DaTaFrAmE == L_ist[7]).idxmax(axis=1)[j]]
