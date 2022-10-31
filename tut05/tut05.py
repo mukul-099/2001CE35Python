@@ -155,3 +155,10 @@ for i in range(1, 5):
     except:
         DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '3'] = 0
     temp3 = temp3+1
+
+#Saving the file in excel format.
+DaTaFrAmE.to_excel("octant_output_ranking_excel.xlsx")
+
+#This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - start_time))
