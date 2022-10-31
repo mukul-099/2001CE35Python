@@ -133,3 +133,25 @@ for j in range(2, int(len(DaTaFrAmE)/mod)+2):
     DaTaFrAmE.at[j, 'Rank1_Octant_ID'] = int((DaTaFrAmE == L_ist[7]).idxmax(axis=1)[j])
     #Now adding the name of tht octant.
     DaTaFrAmE.at[j, 'Rank1 Octant Name'] = D_ict[(DaTaFrAmE == L_ist[7]).idxmax(axis=1)[j]]
+
+#Calculating count of Rank1 mod values.
+DaTaFrAmE.at[6+int(len(DaTaFrAmE)/mod), '1'] = 'Octant ID'
+DaTaFrAmE.at[6+int(len(DaTaFrAmE)/mod), '2'] = 'Octant Name'
+DaTaFrAmE.at[6+int(len(DaTaFrAmE)/mod), '3'] = 'Count of Rank1 Mod Values'
+temp3 = 1
+for i in range(-4, 0):
+    DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '1'] = i
+    DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '2'] = D_ict[str(i)]
+    try:
+        DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod),'3'] = DaTaFrAmE['Rank1_Octant_ID'].value_counts()[int(i)]
+    except:
+        DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '3'] = 0
+    temp3 = temp3+1
+for i in range(1, 5):
+    DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '1'] = i
+    DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '2'] = D_ict[str(i)]
+    try:
+        DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod),'3'] = DaTaFrAmE['Rank1_Octant_ID'].value_counts()[int(i)]
+    except:
+        DaTaFrAmE.at[temp3+6+int(len(DaTaFrAmE)/mod), '3'] = 0
+    temp3 = temp3+1
