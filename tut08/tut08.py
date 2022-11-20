@@ -117,3 +117,100 @@ def INNING(inn1,bat_pl,bow_pl,s):
         if s:
             SHEET2.append([bow_pl[cbow], '', '', 0, 0, 0, 0, 0, 0, 0])
             cbrow = SHEET2.max_row
+
+		#Using if else statements for different rules of cricket.
+        if sr:
+            crun = 1
+        elif zr:
+            pass
+        else:
+            db = double.findall(t)
+            if db:
+                crun = 2
+            else:
+                fr = four.findall(t)
+                if fr:
+                    crun = 4
+                    if not (by or lby):
+                        SHEET1.cell(row=crow, column=8).value = SHEET1.cell(
+                            row=crow, column=8).value+1
+                else:
+                    sx = six.findall(t)
+                    if sx:
+                        crun = 6
+                        SHEET1.cell(row=crow, column=9).value = SHEET1.cell(
+                            row=crow, column=9).value+1
+                    else:
+                        tp = triple.findall(t)
+                        if tp:
+                            crun = 3
+        if wbb or nnnb or w2 or w3:
+            cex = 1
+            SHEET2.cell(row=cbrow, column=6).value = SHEET2.cell(
+                row=cbrow, column=6).value+1
+            if wbb:
+                nw = nw+1
+                SHEET2.cell(row=cbrow, column=9).value = SHEET2.cell(
+                    row=cbrow, column=9).value+1
+            elif w2:
+                nw = nw+2
+                cex = 2
+                SHEET2.cell(row=cbrow, column=6).value = SHEET2.cell(
+                    row=cbrow, column=6).value+1
+                SHEET2.cell(row=cbrow, column=9).value = SHEET2.cell(
+                    row=cbrow, column=9).value+2
+            elif w3:
+                nw = nw+3
+                cex = 3
+                SHEET2.cell(row=cbrow, column=6).value = SHEET2.cell(
+                    row=cbrow, column=6).value+2
+                SHEET2.cell(row=cbrow, column=9).value = SHEET2.cell(
+                    row=cbrow, column=9).value+3
+            else:
+                nnb = nnb+1
+                SHEET1.cell(row=crow, column=7).value = SHEET1.cell(
+                    row=crow, column=7).value+1
+                SHEET2.cell(row=cbrow, column=8).value = SHEET2.cell(
+                    row=cbrow, column=8).value+1
+        else:
+            SHEET1.cell(row=crow, column=7).value = SHEET1.cell(
+                row=crow, column=7).value+1
+            bo = 10*SHEET2.cell(row=cbrow, column=4).value - \
+                int(SHEET2.cell(row=cbrow, column=4).value)*4+1
+            SHEET2.cell(row=cbrow, column=4).value = int(bo/6)*0.4+bo*0.1
+        runs = runs+crun+cex
+        if float(ov[0]) < 6.1:
+            ppr = runs
+        if float(ov[0]) == int(float(ov[0])):
+            if orun == runs:
+                SHEET2.cell(row=cbrow, column=5).value = SHEET2.cell(
+                    row=cbrow, column=5).value+1
+        ot = out.findall(t)
+        ct = caught.findall(t)
+        lw = lbw.findall(t)
+        bw = bowled.findall(t)
+        ctu = caught.finditer(t)
+        ro = run_out.findall(t)
+        for i in ctu:
+            capl = i.group(1)
+        if ot:
+            wickets = wickets+1
+            if not ro:
+                SHEET2.cell(row=cbrow, column=7).value = SHEET2.cell(
+                    row=cbrow, column=7).value+1
+            if wickets != 1:
+                SHEET3['A2'] = str(SHEET3['A2'].value)+', '+str(runs) + \
+                    '-'+str(wickets)+' ('+bat_pl[cbat]+', '+ov[0]+')'
+            else:
+                SHEET3['A2'] = str(runs)+'-'+str(wickets) + \
+                    '('+bat_pl[cbat]+', '+ov[0]+')'
+            if ct:
+                SHEET1.cell(row=crow, column=2).value = 'c ' + \
+                    bow_pl[capl]+' b '+bow_pl[cbow]
+            elif lw:
+                SHEET1.cell(row=crow, column=2).value = 'lbw b '+bow_pl[cbow]
+            elif bw:
+                SHEET1.cell(row=crow, column=2).value = 'b '+bow_pl[cbow]
+            elif ro:
+                SHEET1.cell(
+                    row=crow, column=2).value = 'run out ('+bow_pl[cbow]+')'
