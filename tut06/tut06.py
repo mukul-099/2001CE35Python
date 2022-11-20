@@ -120,3 +120,16 @@ def AtTeNdAnCe_ReP():
             DaTaFrAmE3.to_excel('output/'+temp+'.xlsx', index=False)
     except:
         print("Index overflow, check the range again.")
+        
+    try:
+        # Saving the consolidated excel file.
+        FIN_DaTaFrAmE.to_excel('output/attendance_report_consolidated.xlsx', index=False)
+    except:
+        print("Error saving the excel file in cosolidated format.")
+
+
+#Finnaly calling function.
+AtTeNdAnCe_ReP()
+#This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time-start_time))
