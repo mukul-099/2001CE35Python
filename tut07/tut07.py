@@ -123,3 +123,69 @@ def longest_subsequence_time(longest, frequency, timeRange, OUTsheet):
     for i in range(3, row):
         for j in range(49, 52):
             OUTsheet.cell(row=i, column=j).border = BLC_border
+
+
+def count_longest_subsequence_freq_func(longest, OUTsheet, total_count):
+    # Dictionary to store consecutive sequence count
+    count = {}
+
+    # Dictionary to store frequency count
+    frequency = {}
+
+    # Dictionary to store time range
+    timeRange = {}
+
+    for label in OCT_SIGN:
+        timeRange[label] = []
+
+    # Initialing dictionary to 0 for all labels
+    RST_CNT(count)
+    RST_CNT(frequency)
+
+    # Variable to check last value
+    last = -10
+
+    # Iterating complete excel sheet
+    for i in range(0, total_count):
+        currRow = i+3
+        try:
+            curr = int(OUTsheet.cell(column=11, row=currRow).value)
+
+            # Comparing current and last value
+            if (curr == last):
+                count[curr] += 1
+            else:
+                count[curr] = 1
+                RST_CNT_except(count, curr)
+
+            # Updating frequency
+            if (count[curr] == longest[curr]):
+                frequency[curr] += 1
+
+                # Counting STRTing and ending time of longest subsequence
+                end = float(OUTsheet.cell(row=currRow, column=1).value)
+                STRT = 100*end - longest[curr]+1
+                STRT /= 100
+
+                # Inserting time interval into map
+                timeRange[curr].append([STRT, end])
+
+                # Resetting count dictionary
+                RST_CNT(count)
+            else:
+                RST_CNT_except(count, curr)
+        except FileNotFoundError:
+            print("File not found!!")
+            exit()
+        except ValueError:
+            print("File content is invalid!!")
+            exit()
+
+        # Updating 'last' variable
+        last = curr
+
+    # Setting frequency table into sheet
+    SET_FREQ(longest, frequency, OUTsheet)
+
+    # Setting time range for longest subsequence
+    longest_subsequence_time(longest, frequency, timeRange, OUTsheet)
