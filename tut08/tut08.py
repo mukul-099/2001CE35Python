@@ -214,3 +214,42 @@ def INNING(inn1,bat_pl,bow_pl,s):
             elif ro:
                 SHEET1.cell(
                     row=crow, column=2).value = 'run out ('+bow_pl[cbow]+')'
+
+		#Now filling this data in exel file.
+        SHEET1['I1'] = str(runs)+'-'+str(wickets)+'('+ov[0]+' Ov)'
+
+        if not (by or lby):
+            SHEET1.cell(row=crow, column=6).value = SHEET1.cell(
+                row=crow, column=6).value+crun
+            SHEET2.cell(row=cbrow, column=6).value = SHEET2.cell(
+                row=cbrow, column=6).value+crun
+        else:
+            if by:
+                if fr:
+                    nb = nb+4
+                elif db:
+                    nb = nb+2
+                elif tp:
+                    nb = nb+3
+                elif sr:
+                    nb = nb+1
+            else:
+                if sr:
+                    nlb = nlb+1
+                elif fr:
+                    nlb = nlb+4
+                elif db:
+                    nlb = nlb+2
+                elif tp:
+                    nlb = nlb+3
+
+        SHEET1.cell(row=crow, column=10).value = float("{:.2f}".format(
+            (SHEET1.cell(row=crow, column=6).value)*100/SHEET1.cell(row=crow, column=7).value))
+        ovf = (10*SHEET2.cell(row=cbrow, column=4).value - 4 *
+               int(SHEET2.cell(row=cbrow, column=4).value))/6
+        if ovf:
+            SHEET2.cell(row=cbrow, column=10).value = float(
+                "{:.2f}".format(SHEET2.cell(row=cbrow, column=6).value/ovf))
+        t = inn1.readline()
+        if not t:
+            break
