@@ -393,7 +393,8 @@ def set_overall_Transition_Count(OUTsheet, total_count):
     # Setting transitions counted into sheet
     transition_count_func(2, count_transition, OUTsheet)
 
-def set_rank_count(row,countMap, OUTsheet):
+
+def set_rank_count(row, countMap, OUTsheet):
     # Copying the count list to sort
     sortedCount = []
     count = []
@@ -409,57 +410,61 @@ def set_rank_count(row,countMap, OUTsheet):
 
     for i, el in enumerate(count):
         for j, ell in enumerate(sortedCount):
-            if(ell==el):
+            if (ell == el):
                 rank.append(j+1)
                 sortedCount[j] = -1
                 break
     rank1Oct = -10
 
-    for j in range(0,8):
-        OUTsheet.cell(row = row, column=23+j).value = rank[j]
-        if(rank[j]==1):
+    for j in range(0, 8):
+        OUTsheet.cell(row=row, column=23+j).value = rank[j]
+        if (rank[j] == 1):
             rank1Oct = OCT_SIGN[j]
-            OUTsheet.cell(row = row, column=23+j).fill = YELLOW_bg    
+            OUTsheet.cell(row=row, column=23+j).fill = YELLOW_bg
 
-    OUTsheet.cell(row=row , column=31).value = rank1Oct
-    OUTsheet.cell(row=row , column=32).value = OCT_NAME_id_mapping[rank1Oct]
+    OUTsheet.cell(row=row, column=31).value = rank1Oct
+    OUTsheet.cell(row=row, column=32).value = OCT_NAME_id_mapping[rank1Oct]
+
 
 def overall_octant_rank_func(last_row, OUTsheet):
-    count = {-1:0, 1:0, -2:0, 2:0, -3:0, 3:0, -4:0, 4:0}
+    count = {-1: 0, 1: 0, -2: 0, 2: 0, -3: 0, 3: 0, -4: 0, 4: 0}
 
-    row =4
+    row = 4
     while OUTsheet.cell(row=row, column=29).value is not None:
         oct = int(OUTsheet.cell(row=row, column=31).value)
-        count[oct]+=1
-        row+=1
+        count[oct] += 1
+        row += 1
 
     for i in range(9):
         for j in range(3):
             row = last_row+2+i
             col = 29+j
-            OUTsheet.cell(row=row, column = col).border = BLC_border
+            OUTsheet.cell(row=row, column=col).border = BLC_border
 
     OUTsheet.cell(column=29, row=last_row+2).value = "Octant ID"
     OUTsheet.cell(column=30, row=last_row+2).value = "Octant Name "
-    OUTsheet.cell(column=31, row=last_row+2).value = "Count of Rank 1 Mod Values"
+    OUTsheet.cell(column=31, row=last_row +
+                  2).value = "Count of Rank 1 Mod Values"
 
     for j, oct in enumerate(OCT_SIGN):
         OUTsheet.cell(column=29, row=last_row+3+j).value = oct
-        OUTsheet.cell(column=30, row=last_row+3+j).value = OCT_NAME_id_mapping[oct]
+        OUTsheet.cell(column=30, row=last_row+3 +
+                      j).value = OCT_NAME_id_mapping[oct]
         OUTsheet.cell(column=31, row=last_row+3+j).value = count[oct]
+
 
 def set_mod_count(OUTsheet, mod, total_count):
 	# Initializing empty dictionary
-    count = {-1:0, 1:0, -2:0, 2:0, -3:0, 3:0, -4:0, 4:0}
+    count = {-1: 0, 1: 0, -2: 0, 2: 0, -3: 0, 3: 0, -4: 0, 4: 0}
 
     # Variable to store last row
     last_row = -1
 
     # Iterating loop to set count dictionary
     STRT = 0
-    while(STRT<total_count):
+    while (STRT < total_count):
         try:
-            count[int(OUTsheet.cell(row=STRT+3, column=11).value)] +=1
+            count[int(OUTsheet.cell(row=STRT+3, column=11).value)] += 1
         except FileNotFoundError:
             print("Output file not found!!")
             exit()
@@ -467,19 +472,21 @@ def set_mod_count(OUTsheet, mod, total_count):
             print("Row or column values must be at least 1 ")
             exit()
 
-        STRT+=1
+        STRT += 1
         try:
-            if(STRT%mod==0):
+            if (STRT % mod == 0):
                 # Setting row data
                 try:
                     row = 4 + STRT//mod
                     last_row = row
-                    OUTsheet.cell(row=row, column=14).value = str(STRT-mod) + "-" + str(min(total_count, STRT-1))
+                    OUTsheet.cell(row=row, column=14).value = str(
+                    	STRT-mod) + "-" + str(min(total_count, STRT-1))
 
                     for i, label in enumerate(OCT_SIGN):
-                        OUTsheet.cell(row=row, column=15+i).value = count[label]
+                        OUTsheet.cell(row=row, column=15 +
+                                      i).value = count[label]
 
-                    set_rank_count(row,count, OUTsheet)
+                    set_rank_count(row, count, OUTsheet)
                 except FileNotFoundError:
                     print("Output file not found!!")
                     exit()
@@ -488,21 +495,22 @@ def set_mod_count(OUTsheet, mod, total_count):
                     exit()
 
                 # Reset count values
-                count = {-1:0, 1:0,  -2:0, 2:0, -3:0, 3:0, -4:0, 4:0}
+                count = {-1: 0, 1: 0,  -2: 0, 2: 0, -3: 0, 3: 0, -4: 0, 4: 0}
         except ZeroDivisionError:
             print("Mod can't have 0 value")
             exit()
     try:
-        if(STRT%mod!=0):
+        if (STRT % mod != 0):
             # Setting row data
             try:
                 row = 5 + STRT//mod
                 last_row = row
-                OUTsheet.cell(row=row, column=14).value = str(STRT-mod) + "-" + str(min(total_count, STRT-1))
+                OUTsheet.cell(row=row, column=14).value = str(
+                    STRT-mod) + "-" + str(min(total_count, STRT-1))
                 for i, label in enumerate(OCT_SIGN):
                     OUTsheet.cell(row=row, column=15+i).value = count[label]
-                
-                set_rank_count(row,count, OUTsheet)
+
+                set_rank_count(row, count, OUTsheet)
             except FileNotFoundError:
                 print("Output file not found!!")
                 exit()
@@ -514,16 +522,18 @@ def set_mod_count(OUTsheet, mod, total_count):
         print("Mod can't have 0 value")
         exit()
 
-    if(last_row!=-1):
+    if (last_row != -1):
         overall_octant_rank_func(last_row, OUTsheet)
 
-def setOverallCount(total_count, OUTsheet):	
+
+def setOverallCount(total_count, OUTsheet):
 	# Initializing count dictionary
-    count = {-1:0, 1:0, -2:0, 2:0, -3:0, 3:0, -4:0, 4:0}
+    count = {-1: 0, 1: 0, -2: 0, 2: 0, -3: 0, 3: 0, -4: 0, 4: 0}
     # Incrementing count dictionary data
     try:
-        for i in range (3,total_count+3):
-            count[int(OUTsheet.cell(column=11, row=i).value)] = count[int(OUTsheet.cell(column=11, row=i).value)] +1
+        for i in range(3, total_count+3):
+            count[int(OUTsheet.cell(column=11, row=i).value)] = count[int(
+            	OUTsheet.cell(column=11, row=i).value)] + 1
     except FileNotFoundError:
         print("Output file not found!!")
         exit()
@@ -547,65 +557,70 @@ def setOverallCount(total_count, OUTsheet):
 
     set_rank_count(4, count, OUTsheet)
 
-def set_overall_octant_rank_count(OUTsheet, mod, total_count):
-    headers = ["Octant ID",1,-1,2,-2,3,-3,+4,-4,"Rank Octant 1", "Rank Octant -1","Rank Octant 2","Rank Octant -2","Rank Octant 3","Rank Octant -3","Rank Octant 4","Rank Octant -4","Rank1 Octant ID","Rank1 Octant Name"]
 
-    totalRows = total_count//mod+1+1 # header + overall
-    if total_count%mod!=0:
-        totalRows+=1
+def set_overall_octant_rank_count(OUTsheet, mod, total_count):
+    headers = ["Octant ID", 1, -1, 2, -2, 3, -3, +4, -4, "Rank Octant 1", "Rank Octant -1", "Rank Octant 2", "Rank Octant -2",
+               "Rank Octant 3", "Rank Octant -3", "Rank Octant 4", "Rank Octant -4", "Rank1 Octant ID", "Rank1 Octant Name"]
+
+    totalRows = total_count//mod+1+1  # header + overall
+    if total_count % mod != 0:
+        totalRows += 1
 
     for i, header in enumerate(headers):
         for j in range(totalRows):
-            OUTsheet.cell(row=3+j, column = 14+i).border = BLC_border
+            OUTsheet.cell(row=3+j, column=14+i).border = BLC_border
 
     for i, header in enumerate(headers):
-        OUTsheet.cell(row=3, column = i+14).value = header
+        OUTsheet.cell(row=3, column=i+14).value = header
 
-    OUTsheet.cell(row=4, column = 13).value = "Mod " + str(mod)
+    OUTsheet.cell(row=4, column=13).value = "Mod " + str(mod)
 
     setOverallCount(total_count, OUTsheet)
 
 # Method based on if-else to return octant type
-def get_octant(x,y,z):
-    if(x>=0 and y>=0):
-        if(z>=0):
+
+
+def get_octant(x, y, z):
+    if (x >= 0 and y >= 0):
+        if (z >= 0):
             return 1
         else:
             return -1
-    
-    if(x<0 and y>=0):
-        if(z>=0):
+
+    if (x < 0 and y >= 0):
+        if (z >= 0):
             return 2
         else:
             return -2
 
-    if(x<0 and y<0):
-        if(z>=0):
+    if (x < 0 and y < 0):
+        if (z >= 0):
             return 3
         else:
             return -3
 
-    if(x>=0 and y<0):
-        if(z>=0):
+    if (x >= 0 and y < 0):
+        if (z >= 0):
             return 4
         else:
             return -4
+
 
 def setProcessedDataWithOctant(U_AVG, V_AVG, W_AVG, total_count, inputSheet, OUTsheet):
     STRT = 2
     time = inputSheet.cell(STRT, 1).value
 
     # Iterating through out the sheet
-    while(time!=None):
+    while (time != None):
         # Calculating processed data
         try:
             U1 = inputSheet.cell(STRT, 2).value - U_AVG
             V1 = inputSheet.cell(STRT, 3).value - V_AVG
             W1 = inputSheet.cell(STRT, 4).value - W_AVG
-            
-            U1 = round(U1,3)
-            V1 = round(V1,3)
-            W1 = round(W1,3)
+
+            U1 = round(U1, 3)
+            V1 = round(V1, 3)
+            W1 = round(W1, 3)
 
             oct = get_octant(U1, V1, W1)
         except FileNotFoundError:
@@ -638,6 +653,7 @@ def setProcessedDataWithOctant(U_AVG, V_AVG, W_AVG, total_count, inputSheet, OUT
             print("Row or column values must be at least 1 ")
             exit()
 
+
 def SET_IN_DATA(input_file_name, OUTsheet):
 	input_file = openpyxl.load_workbook(input_file_name)
 	inputSheet = input_file.active
@@ -646,12 +662,12 @@ def SET_IN_DATA(input_file_name, OUTsheet):
 	time = inputSheet.cell(STRT, 1).value
 
     # Variables to store sum variable
-	U_SUM = 0 
+	U_SUM = 0
 	V_SUM = 0
 	W_SUM = 0
 
 	# Iterating complete file till time value is not None
-	while(time!=None):
+	while (time != None):
 		try:
 			U_SUM += float(inputSheet.cell(STRT, 2).value)
 			V_SUM += float(inputSheet.cell(STRT, 3).value)
@@ -665,10 +681,10 @@ def SET_IN_DATA(input_file_name, OUTsheet):
 
 		try:
 			# Setting input time,u,v,w values
-			OUTsheet.cell(row=STRT+1, column=1).value = inputSheet.cell(STRT, 1).value 
-			OUTsheet.cell(row=STRT+1, column=2).value = inputSheet.cell(STRT, 2).value 
-			OUTsheet.cell(row=STRT+1, column=3).value = inputSheet.cell(STRT, 3).value 
-			OUTsheet.cell(row=STRT+1, column=4).value = inputSheet.cell(STRT, 4).value 
+			OUTsheet.cell(row=STRT+1, column=1).value = inputSheet.cell(STRT, 1).value
+			OUTsheet.cell(row=STRT+1, column=2).value = inputSheet.cell(STRT, 2).value
+			OUTsheet.cell(row=STRT+1, column=3).value = inputSheet.cell(STRT, 3).value
+			OUTsheet.cell(row=STRT+1, column=4).value = inputSheet.cell(STRT, 4).value
 		except FileNotFoundError:
 			print("File not found!!")
 			exit()
@@ -680,7 +696,7 @@ def SET_IN_DATA(input_file_name, OUTsheet):
 		time = inputSheet.cell(STRT, 1).value
 
 	# Setting total count
-	total_count = STRT-2 # -1 for header and -1 for last None
+	total_count = STRT-2  # -1 for header and -1 for last None
 	# Calculating average
 	try:
 		U_AVG = round(U_SUM/total_count, 3)
@@ -703,14 +719,17 @@ def SET_IN_DATA(input_file_name, OUTsheet):
 		exit()
 
 	# Processing input
-	setProcessedDataWithOctant(U_AVG, V_AVG, W_AVG, total_count, inputSheet, OUTsheet)
+	setProcessedDataWithOctant(
+		U_AVG, V_AVG, W_AVG, total_count, inputSheet, OUTsheet)
 
 	return total_count
+
 
 def entry_point(input_file, mod):
 	fileName = input_file.split("\\")[-1]
 	fileName = fileName.split(".xlsx")[0]
-	outputFileName = "output/" + fileName + "_octant_analysis_mod_" + str(mod) + ".xlsx"
+	outputFileName = "output/" + fileName + \
+		"_octant_analysis_mod_" + str(mod) + ".xlsx"
 
 	outputFile = openpyxl.Workbook()
 	OUTsheet = outputFile.active
@@ -719,10 +738,12 @@ def entry_point(input_file, mod):
 	OUTsheet.cell(row=1, column=24).value = "Rank #1 Should be highlighted YELLOW"
 	OUTsheet.cell(row=1, column=35).value = "Overall Transition Count"
 	OUTsheet.cell(row=1, column=45).value = "Longest Subsequence Length"
-	OUTsheet.cell(row=1, column=49).value = "Longest Subsequence Length with Range"
+	OUTsheet.cell(
+		row=1, column=49).value = "Longest Subsequence Length with Range"
 	OUTsheet.cell(row=2, column=36).value = "To"
 
-	headers = ["T", "U", "V", "W", "U AVG", "V AVG", "W AVG", "U'=U - U AVG", "V'=V - V AVG","W'=W - W AVG", "Octant"]
+	headers = ["T", "U", "V", "W", "U AVG", "V AVG", "W AVG",
+            "U'=U - U AVG", "V'=V - V AVG", "W'=W - W AVG", "Octant"]
 	for i, header in enumerate(headers):
 		OUTsheet.cell(row=2, column=i+1).value = header
 
@@ -735,11 +756,18 @@ def entry_point(input_file, mod):
 
 	outputFile.save(outputFileName)
 
+
 def octant_analysis(mod=5000):
 	path = os.getcwd()
 	csv_files = glob.glob(os.path.join(path + "\input", "*.xlsx"))
-	
+
 	for file in csv_files:
 		entry_point(file, mod)
-mod=5000
+
+
+mod = 5000
 octant_analysis(mod)
+
+#This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - STRT_time))
