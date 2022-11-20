@@ -350,3 +350,45 @@ def set_mod_overall_transition_count(OUTsheet, mod, total_count):
 
         # Setting transition counts
         transition_count_func(rowSTRT + 13*i, transCount, OUTsheet)
+
+
+def set_overall_Transition_Count(OUTsheet, total_count):
+	# Initializing empty dictionary
+    count_transition = {}
+    for i in range(1, 5):
+        for j in range(1, 5):
+            count_transition[str(i)+str(j)] = 0
+            count_transition[str(i)+str(-j)] = 0
+            count_transition[str(-i)+str(j)] = 0
+            count_transition[str(-i)+str(-j)] = 0
+
+    # Iterating octants values to fill dictionary
+    STRT = 0
+
+    # try and except block for string to int conversion
+    try:
+        last = int(OUTsheet["K3"].value)
+    except ValueError:
+        print("Sheet input can't be converted to int")
+        exit()
+    except TypeError:
+        print("Sheet doesn't contain integer octant")
+        exit()
+
+    while (STRT < total_count-1):
+        # try and except block for string to int conversion
+        try:
+            curr = int(OUTsheet.cell(row=STRT+4, column=11).value)
+            count_transition[str(last) + str(curr)] += 1
+            last = curr
+        except ValueError:
+            print("Sheet input can't be converted to int")
+            exit()
+        except TypeError:
+            print("Sheet doesn't contain integer octant")
+            exit()
+
+        STRT += 1
+
+    # Setting transitions counted into sheet
+    transition_count_func(2, count_transition, OUTsheet)
