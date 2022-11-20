@@ -71,3 +71,49 @@ def INNING(inn1,bat_pl,bow_pl,s):
     nw=0
     nnb=0
     ppr=0
+    
+    #This code dynamically works on each line.
+    while True:
+        t = inn1.readline()
+        if not t:
+            break
+        crun = 0
+        cex = 0
+        ov = over.findall(t)
+        if float(ov[0]) == int(float(ov[0]))+0.6:
+            ov[0] = str(int(float(ov[0]))+1)
+        if float(ov[0]) == int(float(ov[0]))+0.1:
+            orun = runs
+        nnnb = no_ball.findall(t)
+        wbb = wide.findall(t)
+        sr = single.findall(t)
+        zr = zero.findall(t)
+        by = byes.findall(t)
+        lby = lbyes.findall(t)
+        pl = player.finditer(t)
+        w2 = wide2.findall(t)
+        w3 = wide3.findall(t)
+        for i in pl:
+            cbow = i.group(2)
+            cbat = i.group(4)
+        r = 1
+        for col in SHEET1.iter_cols(min_col=1, max_col=1):
+            for cell in col:
+                if cell.value == bat_pl[cbat]:
+                    crow = cell.row
+                    r = 0
+                    break
+        if r:
+            SHEET1.append([bat_pl[cbat], 'not out', '', '', '', 0, 0, 0, 0, 0])
+            crow = SHEET1.max_row
+
+        s = 1
+        for col in SHEET2.iter_cols(min_col=1, max_col=1):
+            for cell in col:
+                if cell.value == bow_pl[cbow]:
+                    cbrow = cell.row
+                    s = 0
+                    break
+        if s:
+            SHEET2.append([bow_pl[cbow], '', '', 0, 0, 0, 0, 0, 0, 0])
+            cbrow = SHEET2.max_row
