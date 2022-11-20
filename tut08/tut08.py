@@ -41,3 +41,33 @@ def INNING(inn1,bat_pl,bow_pl,s):
     SHEET2['I1']='WD'
     SHEET2['J1']='ECO'
     SHEET3['A1']='Fall of wickets'
+    
+    #Using regex.
+    
+    #These are some variables which will be storing the data which relates to their name.
+    over=re.compile(r'(\d\d?\.\d)')
+    zero=re.compile(r'no run')
+    no_ball=re.compile(r', (no ball),')
+    wide=re.compile(r', wide,')
+    wide2=re.compile(r', 2 wides,')
+    wide3=re.compile(r', 3 wides,')
+    single=re.compile(r', 1 run,')
+    six=re.compile(r', SIX,')
+    four=re.compile(r', FOUR,')
+    byes=re.compile(r', (byes),')
+    lbyes=re.compile(r', (leg byes),')
+    double=re.compile(r', 2 runs,')
+    triple=re.compile(r', 3 runs,')
+    out=re.compile(r', out')
+    player=re.compile(r'(\d\d?\.\d) (\w+) (to|\w+ to) (\w+)( \w+)?,')
+    caught=re.compile(r', out Caught by (\w+)')
+    lbw=re.compile(r', out Lbw!!')
+    bowled=re.compile(r', out Bowled!!')
+    run_out=re.compile(r'Run Out!! ')
+    runs=0
+    wickets=0
+    nb=0
+    nlb=0
+    nw=0
+    nnb=0
+    ppr=0
