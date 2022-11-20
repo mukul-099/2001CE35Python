@@ -189,3 +189,164 @@ def count_longest_subsequence_freq_func(longest, OUTsheet, total_count):
 
     # Setting time range for longest subsequence
     longest_subsequence_time(longest, frequency, timeRange, OUTsheet)
+
+# Method to set frequency count to sheet
+
+
+def find_longest_subsequence(OUTsheet, total_count):
+	# Dictionary to store consecutive sequence count
+    count = {}
+
+    # Dictionary to store longest count
+    longest = {}
+
+    # Initialing dictionary to 0 for all labels
+    RST_CNT(count)
+    RST_CNT(longest)
+
+    # Variable to check last value
+    last = -10
+
+    # Iterating complete excel sheet
+    for i in range(0, total_count):
+        currRow = i+3
+        try:
+            curr = int(OUTsheet.cell(column=11, row=currRow).value)
+
+            # Comparing current and last value
+            if (curr == last):
+                count[curr] += 1
+                longest[curr] = max(longest[curr], count[curr])
+                RST_CNT_except(count, curr)
+            else:
+                count[curr] = 1
+                longest[curr] = max(longest[curr], count[curr])
+                RST_CNT_except(count, curr)
+        except FileNotFoundError:
+            print("File not found!!")
+            exit()
+
+        # Updating "last" variable
+        last = curr
+
+    # Method to Count longest subsequence frequency
+    count_longest_subsequence_freq_func(longest, OUTsheet, total_count)
+
+
+def transition_count_func(row, transition_count, OUTsheet):
+    # Setting hard coded inputs
+    try:
+        OUTsheet.cell(row=row, column=36).value = "To"
+        OUTsheet.cell(row=row+1, column=35).value = "Octant #"
+        OUTsheet.cell(row=row+2, column=34).value = "From"
+
+        for i in range(35, 44):
+            for j in range(row+1, row+1+9):
+                OUTsheet.cell(row=j, column=i).border = BLC_border
+
+    except FileNotFoundError:
+        print("Output file not found!!")
+        exit()
+    except ValueError:
+        print("Row or column values must be at least 1 ")
+        exit()
+
+    # Setting Labels
+    for i, label in enumerate(OCT_SIGN):
+        try:
+            OUTsheet.cell(row=row+1, column=i+36).value = label
+            OUTsheet.cell(row=row+i+2, column=35).value = label
+        except FileNotFoundError:
+            print("Output file not found!!")
+            exit()
+        except ValueError:
+            print("Row or column values must be at least 1 ")
+            exit()
+
+    # Setting data
+    for i, l1 in enumerate(OCT_SIGN):
+        maxi = -1
+
+        for j, l2 in enumerate(OCT_SIGN):
+            val = transition_count[str(l1)+str(l2)]
+            maxi = max(maxi, val)
+
+        for j, l2 in enumerate(OCT_SIGN):
+            try:
+                OUTsheet.cell(row=row+i+2, column=36 +
+                              j).value = transition_count[str(l1)+str(l2)]
+                if transition_count[str(l1)+str(l2)] == maxi:
+                    maxi = -1
+                    OUTsheet.cell(row=row+i+2, column=36+j).fill = YELLOW_bg
+            except FileNotFoundError:
+                print("Output file not found!!")
+                exit()
+            except ValueError:
+                print("Row or column values must be at least 1 ")
+                exit()
+
+
+def set_mod_overall_transition_count(OUTsheet, mod, total_count):
+	# Counting partitions w.r.t. mod
+    try:
+        totalPartition = total_count//mod
+    except ZeroDivisionError:
+        print("Mod can't have 0 value")
+        exit()
+
+    # Checking mod value range
+    if (mod < 0):
+        raise Exception("Mod value should be in range of 1-30000")
+
+    if (total_count % mod != 0):
+        totalPartition += 1
+
+    # Initializing row STRT for data filling
+    rowSTRT = 16
+
+    # Iterating all partitions
+    for i in range(0, totalPartition):
+        # Initializing STRT and end values
+        STRT = i*mod
+        end = min((i+1)*mod-1, total_count-1)
+
+        # Setting STRT-end values
+        try:
+            OUTsheet.cell(column=35, row=rowSTRT-1 + 13 *
+                          i).value = "Mod Transition Count"
+            OUTsheet.cell(column=35, row=rowSTRT + 13 *
+                          i).value = str(STRT) + "-" + str(end)
+        except FileNotFoundError:
+            print("Output file not found!!")
+            exit()
+        except ValueError:
+            print("Row or column values must be at least 1 ")
+            exit()
+
+        # Initializing empty dictionary
+        transCount = {}
+        for a in range(1, 5):
+            for b in range(1, 5):
+                transCount[str(a)+str(b)] = 0
+                transCount[str(a)+str(-b)] = 0
+                transCount[str(-a)+str(b)] = 0
+                transCount[str(-a)+str(-b)] = 0
+
+        # Counting transition for range [STRT, end)
+        for a in range(STRT, end+1):
+            try:
+                curr = OUTsheet.cell(column=11, row=a+3).value
+                next = OUTsheet.cell(column=11, row=a+4).value
+            except FileNotFoundError:
+                print("Output file not found!!")
+                exit()
+            except ValueError:
+                print("Row or column values must be at least 1 ")
+                exit()
+
+            # Incrementing count for within range value
+            if (next != None):
+                transCount[str(curr) + str(next)] += 1
+
+        # Setting transition counts
+        transition_count_func(rowSTRT + 13*i, transCount, OUTsheet)
