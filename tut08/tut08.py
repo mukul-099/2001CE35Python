@@ -302,3 +302,43 @@ def INNING(inn1,bat_pl,bow_pl,s):
     SHEET1.merge_cells(start_row=mr12, start_column=9,end_row=mr12, end_column=10)
 
     return innbat
+
+#This function will generate scorecard.
+def scorecard(inn1,inn2):
+    pak_pl={'Babar':'Babar Azam (c)','Rizwan':'Mohammad Rizwan (wk)','Fakhar':'Fakhar Zaman','Iftikhar':'Iftikhar Ahmed','Khushdil':'Khushdil Shah','Asif':'Asif Ali','Shadab':'Shadab Khan','Mohammad':'Mohammad Nawaz','Naseem':'Naseem Shah','Haris':'Haris Rauf','Dahani':'Shahnawaz Dahani'}
+    ind_pl={'Rohit':'Rohit Sharma (c)','Rahul':'KL Rahul','Kohli':'Virat Kohli','Suryakumar':'Suryakumar Yadav','Jadeja':'Ravindra Jadeja','Hardik':'Hardik Pandya','Karthik':'Dinesh Karthik (wk)','Bhuvneshwar':'Bhuvneshwar Kumar','Avesh':'Avesh Khan',"Arshdeep":'Arshdeep Singh','Chahal':'Yuzvendra Chahal'}
+    finn=INNING(inn1,pak_pl,ind_pl,'Pakistan')
+    sinn=INNING(inn2,ind_pl,pak_pl,'India')
+
+    SHEET1=finn.active
+    SHEET2=sinn.active
+
+    #Here we are combining both the innings.
+    mc1=SHEET1.max_column
+    mc2=SHEET2.max_column
+    mr1=SHEET1.max_row
+    mr2=SHEET2.max_row
+
+    for i in range(1,mr2+1):
+        for j in range(1,11):
+            SHEET1.cell(row=mr1+i+1,column=j).value=SHEET2.cell(row=i,column=j).value    
+    SHEET1.merge_cells(start_row=34, start_column=1, end_row=34, end_column=8)
+    SHEET1.merge_cells(start_row=35, start_column=2, end_row=35, end_column=5)
+    SHEET1.merge_cells(start_row=48, start_column=1, end_row=50, end_column=10)
+    for i in range(36,43):
+        SHEET1.merge_cells(start_row=i, start_column=2, end_row=i, end_column=5)
+    return finn
+    
+#Oppening the comentary files given in .yxt format.
+pak=open("pak_inns1.txt",'r')
+ind=open('india_inns2.txt','r')
+team=open('teams.txt','r')
+
+wb=Workbook()
+wb=scorecard(pak,ind)
+
+#Saving the output in .xlsx format.
+wb.save('Scorecard.xlsx')
+end_time=datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - start_time))
+
